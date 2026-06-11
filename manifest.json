@@ -1,0 +1,15 @@
+{
+  "name": "Matcha Balance",
+  "short_name": "Matcha",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff0f7",
+  "theme_color": "#f7a8c8",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

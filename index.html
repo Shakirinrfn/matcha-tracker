@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Matcha Balance</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f7a8c8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Matcha Balance" />
+</head>
+<body>
+  <main class="phone-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Pink & Green Wellness</p>
+        <h1>Matcha Balance</h1>
+      </div>
+      <div class="leaf-badge">🍵</div>
+    </header>
+
+    <section class="summary-grid">
+      <article class="summary-card pink">
+        <span>This Week</span>
+        <strong id="weekSpend">$0.00</strong>
+      </article>
+      <article class="summary-card green">
+        <span>This Month</span>
+        <strong id="monthSpend">$0.00</strong>
+      </article>
+    </section>
+
+    <section class="tab-panel active" id="tab-home">
+      <div class="hero-card">
+        <p class="mini-label">Next Matcha Guidance</p>
+        <h2 id="nextAdvice">Log your first matcha today.</h2>
+        <p id="nextAdviceDetail">After each intake, the app will ask about symptoms 2 hours later and suggest when your next matcha should be.</p>
+        <button class="primary-btn" data-switch="log">Log Matcha</button>
+      </div>
+
+      <div class="status-card" id="checkinCard">
+        <div>
+          <p class="mini-label">2-Hour Check-In</p>
+          <h3 id="checkinTitle">No check-in pending</h3>
+          <p id="checkinText">Your next symptom check-in will appear after logging a matcha intake.</p>
+        </div>
+        <button class="secondary-btn hidden" id="startCheckinBtn">Start</button>
+      </div>
+
+      <div class="tips-card">
+        <h3>Gentle Matcha Rules</h3>
+        <div class="rule-row"><span>Good</span><p>No symptoms → next matcha in 24 hours.</p></div>
+        <div class="rule-row"><span>Careful</span><p>Mild symptoms → wait 36 hours.</p></div>
+        <div class="rule-row"><span>Pause</span><p>Strong symptoms → wait 48–72 hours and reduce amount.</p></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-log">
+      <form class="form-card" id="matchaForm">
+        <h2>Log Matcha</h2>
+        <label>
+          Date & Time
+          <input type="datetime-local" id="intakeTime" required />
+        </label>
+        <label>
+          Matcha Type / Place
+          <input type="text" id="matchaName" placeholder="e.g. Iced matcha latte" required />
+        </label>
+        <label>
+          Amount Spent
+          <input type="number" id="matchaCost" min="0" step="0.01" placeholder="0.00" required />
+        </label>
+        <label>
+          Size / Notes
+          <textarea id="matchaNotes" rows="3" placeholder="e.g. large, extra shot, sweetened"></textarea>
+        </label>
+        <button class="primary-btn" type="submit">Save Intake</button>
+      </form>
+    </section>
+
+    <section class="tab-panel" id="tab-checkin">
+      <form class="form-card" id="symptomForm">
+        <h2>Symptom Check-In</h2>
+        <p class="form-help">Use this 2 hours after drinking matcha.</p>
+        <label>
+          How do you feel?
+          <select id="symptomLevel" required>
+            <option value="none">No symptoms</option>
+            <option value="mild">Mild symptoms</option>
+            <option value="moderate">Moderate symptoms</option>
+            <option value="strong">Strong symptoms</option>
+          </select>
+        </label>
+        <label>
+          Symptoms experienced
+          <div class="chip-grid">
+            <input type="checkbox" id="jitters" value="Jitters"><label for="jitters">Jitters</label>
+            <input type="checkbox" id="anxiety" value="Anxiety"><label for="anxiety">Anxiety</label>
+            <input type="checkbox" id="stomach" value="Stomach discomfort"><label for="stomach">Stomach</label>
+            <input type="checkbox" id="headache" value="Headache"><label for="headache">Headache</label>
+            <input type="checkbox" id="sleep" value="Sleep disruption"><label for="sleep">Sleep</label>
+            <input type="checkbox" id="heart" value="Fast heartbeat"><label for="heart">Heartbeat</label>
+          </div>
+        </label>
+        <label>
+          Notes
+          <textarea id="symptomNotes" rows="3" placeholder="Anything you noticed?"></textarea>
+        </label>
+        <button class="primary-btn" type="submit">Save Check-In</button>
+      </form>
+      <div class="status-card" id="latestResult"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-insights">
+      <div class="insight-grid">
+        <article class="insight-card">
+          <span>Total Spent</span>
+          <strong id="totalSpend">$0.00</strong>
+        </article>
+        <article class="insight-card">
+          <span>Total Cups</span>
+          <strong id="totalCups">0</strong>
+        </article>
+        <article class="insight-card">
+          <span>Average Cost</span>
+          <strong id="avgCost">$0.00</strong>
+        </article>
+        <article class="insight-card">
+          <span>Symptom Pattern</span>
+          <strong id="symptomPattern">None</strong>
+        </article>
+      </div>
+
+      <div class="chart-card">
+        <h3>Weekly Spending</h3>
+        <canvas id="weekChart" width="340" height="180"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3>Monthly Spending</h3>
+        <canvas id="monthChart" width="340" height="180"></canvas>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-history">
+      <div class="section-title">
+        <h2>History</h2>
+        <button class="danger-btn" id="clearDataBtn">Clear</button>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </section>
+
+    <nav class="bottom-tabs">
+      <button class="tab-btn active" data-tab="home"><span>🏠</span>Home</button>
+      <button class="tab-btn" data-tab="log"><span>＋</span>Log</button>
+      <button class="tab-btn" data-tab="checkin"><span>🩺</span>Check</button>
+      <button class="tab-btn" data-tab="insights"><span>📊</span>Insights</button>
+      <button class="tab-btn" data-tab="history"><span>🗂</span>History</button>
+    </nav>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
